@@ -38,11 +38,12 @@ const cu = async (title, yea, img, backdrop) => {
 cu(SubTitle, year, image, backdrop);
 
 
-const js = {
-    "latino": [],
-    "sub": [],
-    "esp": []
-};
+// const js = {
+//     "latino": [],
+//     "sub": [],
+//     "esp": []
+// };
+const js = {};
 var cm = "";
 arr.forEach(a => {
     var b = a.innerText
@@ -54,6 +55,7 @@ arr.forEach(a => {
 
         if (idioma.includes("Latino")) {
             // cm += `de3 -n '${title}' -i "LATINO" -c HD -K HD -e ${uri_up} -t 232323`
+            js["latino"] = [];
             js["latino"]["servidor"] = "uptobox";
             js["latino"]["idioma"] = "LATINO";
             js["latino"]["calidad"] = calidad;
@@ -61,12 +63,14 @@ arr.forEach(a => {
             
         }else if(idioma.includes("Subtitulado")){
 
+            js["sub"] = [];
             js["sub"]["servidor"] = "uptobox";
             js["sub"]["idioma"] = "SUB";
             js["sub"]["calidad"] = calidad;
             js["sub"]["url"] = url;
         }else if(idioma.includes("Español")){
 
+            js["esp"] = [];
             js["esp"]["servidor"] = "uptobox";
             js["esp"]["idioma"] = "CASTELLANO";
             js["esp"]["calidad"] = calidad;
@@ -106,8 +110,10 @@ async function getDatos() {
 
     for (const p in js){
         // if (!js[p].length === 0)
-        console.log(js[p]);
-        console.log(js[p].length);
+        // if (js[p].length == 0) continue;
+        console.log("ESTA SERIA EL ARRAY"+js[p]);
+        console.log("ESTA SERIA EL ARRAY CANTIDAD"+js[p].length);
+        console.log("NUEMERO DE AR"+js[p].length);
         const awaiData = await curll(js[p]["url"], js[p]["idioma"]);
     }
 }
