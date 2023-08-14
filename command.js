@@ -3,6 +3,7 @@ if (window.location.host === "pelisenhd.org") {
   console.log("window.location.host", window.location.host);
   const url = document.querySelector(".box_links.hdpastes\\.com a").href;
   const query = url.split("s.php?i=")[1];
+
   document.querySelector(".box_links.hdpastes\\.com a").href = atob(
     atob(atob(atob(atob(query))))
   );
@@ -10,6 +11,15 @@ if (window.location.host === "pelisenhd.org") {
     document.querySelector(".box_links.hdpastes\\.com a").href
   );
   const urlDecodeFianal = urlDecode.replace("|pehd", "");
+
+  const nodeList = document.querySelectorAll(".box_links.hdpastes\\.com a");
+
+  // Itera a través de la NodeList y obtén los valores de "href"
+  nodeList.forEach(function (element) {
+    if (element.getAttribute("href")) {
+      element.setAttribute("href", urlDecodeFianal);
+    }
+  });
 
   // Obtener el contenedor
   const contenedor = document.querySelector(".details__cover");
