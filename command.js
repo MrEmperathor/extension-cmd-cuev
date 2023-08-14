@@ -1,3 +1,41 @@
+// Desencriptar free de pelisenhsd.com
+if (window.location.host === "pelisenhd.org") {
+  console.log("window.location.host", window.location.host);
+  const url = document.querySelector(".box_links.hdpastes\\.com a").href;
+  const query = url.split("s.php?i=")[1];
+  document.querySelector(".box_links.hdpastes\\.com a").href = atob(
+    atob(atob(atob(atob(query))))
+  );
+  const urlDecode = decryptROT13(
+    document.querySelector(".box_links.hdpastes\\.com a").href
+  );
+  const urlDecodeFianal = urlDecode.replace("|pehd", "");
+
+  // Obtener el contenedor
+  const contenedor = document.querySelector(".details__cover");
+
+  // Crear un elemento botón
+  const boton = document.createElement("a");
+  boton.textContent = "Ver enlaces Free";
+  boton.href = urlDecodeFianal;
+  boton.target = "_blank";
+  boton.classList.add("details__trailer"); // Agregar clases si es necesario
+
+  // Agregar el botón al contenedor
+  contenedor.appendChild(boton);
+
+  // window.open(urlDecodeFianal, "_blank");
+}
+
+function decryptROT13(ciphertext) {
+  return ciphertext.replace(/[a-zA-Z]/g, function (char) {
+    var code = char.charCodeAt(0);
+    var base =
+      code >= "a".charCodeAt(0) ? "a".charCodeAt(0) : "A".charCodeAt(0);
+    return String.fromCharCode(base + ((code - base + 13) % 26));
+  });
+}
+
 // Desencriptar enlace free
 if (window.location.host === "www.descargatepelis.com") {
   const url = document.querySelectorAll(".boxdescargas>a")[1].href;

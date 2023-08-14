@@ -1,16 +1,23 @@
 {
-	"manifest_version": 2,
-	"name": "breaky command",
-	"description": "Crear comandos para el script breaky uploader",
-	"version": "1.2",
-	"icons": {
-		"128": "128.png"
-	},
-	"background": {
-		"scripts": ["background.js"]
-	},
-	"browser_action": {
-		"default_icon": "cm.png"
-	},
-	"permissions": ["activeTab"]
+  "manifest_version": 2,
+  "name": "breaky command",
+  "description": "Crear comandos para el script breaky uploader",
+  "version": "1.2",
+  "icons": {
+    "128": "128.png"
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "browser_action": {
+    "default_icon": "cm.png"
+  },
+  "permissions": ["activeTab"],
+  "content_scripts": [
+    {
+      "matches": ["https://pelisenhd.org/*"],
+      "js": ["command.js"],
+      "run_at": "document_end"
+    }
+  ]
 }
