@@ -1,3 +1,26 @@
+// Desencriptar enlaces hdpaste.com
+if (window.location.host === "hdpastes.com") {
+  const arrayEnlacesCrudos = document.querySelectorAll("a");
+  const fromEnlaces = Array?.from(arrayEnlacesCrudos);
+
+  const regex = /go\.php\?out=([^&]+)/;
+
+  fromEnlaces?.map((e, index) => {
+    const url = e?.href;
+    const match = url?.match(regex);
+    if (match) {
+      const param = match[1]; // El valor deseado estará en el índice 1 del arreglo de coincidencias
+      const urlDecode = atob(param);
+      const paramDecodeROT13 = decryptROT13(urlDecode);
+      e.href = paramDecodeROT13;
+      document.querySelectorAll("a")[index].href =
+        decodeURIComponent(paramDecodeROT13);
+    } else {
+      console.log("No se encontró el valor en la URL.");
+    }
+  });
+}
+
 // Desencriptar free de pelisenhsd.com
 if (window.location.host === "pelisenhd.org") {
   console.log("window.location.host", window.location.host);
@@ -374,3 +397,12 @@ async function getDatos() {
 }
 
 getDatos();
+
+function decryptROT13(ciphertext) {
+  return ciphertext.replace(/[a-zA-Z]/g, function (char) {
+    var code = char.charCodeAt(0);
+    var base =
+      code >= "a".charCodeAt(0) ? "a".charCodeAt(0) : "A".charCodeAt(0);
+    return String.fromCharCode(base + ((code - base + 13) % 26));
+  });
+}
