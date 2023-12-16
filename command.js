@@ -1,3 +1,93 @@
+// Ejecutar varios formularios en una página
+if (window.location.host === "zefoy.com") {
+  function esperarFormulario() {
+    return new Promise((resolve) => {
+      // Función de observador de mutación para detectar cambios en el DOM
+      const observer = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+          if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
+            // Verificar si se ha agregado un formulario al DOM
+            const formulario = document.querySelector(
+              'form[action="c2VuZC9mb2xeb3dlcnNfdGlrdG9V"] .wbutton'
+            );
+            if (formulario) {
+              observer.disconnect(); // Detener la observación
+              resolve(formulario.closest("form"));
+            }
+          }
+        }
+      });
+
+      // Iniciar la observación del DOM
+      observer.observe(document.body, { childList: true, subtree: true });
+    });
+  }
+
+  function getLTMValue() {
+    // Encuentra el script dentro del elemento con ID "c2VuZC9mb2xeb3dlcnNfdGlrdG9V"
+    var scriptElement = document.querySelector(
+      "#c2VuZC9mb2xeb3dlcnNfdGlrdG9V script"
+    );
+
+    // Extrae el valor de ltm desde el script
+    var ltmValue = null;
+    if (scriptElement) {
+      var scriptContent = scriptElement.textContent;
+      var match = scriptContent.match(/var ltm=(\d+);/);
+      if (match && match[1]) {
+        ltmValue = parseInt(match[1]);
+      }
+    }
+
+    return ltmValue;
+  }
+
+  async function simularClicEnFormularioYBoton() {
+    // Simular un clic en el botón del primer formulario
+    var botonDeFormulario1 = document.querySelector(
+      'form[action="c2VuZC9mb2xeb3dlcnNfdGlrdG9V"] button'
+    );
+    botonDeFormulario1.click();
+
+    // Esperar a que aparezca el primer formulario
+    const formulario1 = await esperarFormulario();
+
+    setTimeout(() => {
+      const botonDeFormulario2 = formulario1.querySelector(".wbutton");
+      botonDeFormulario2.click();
+
+      // Esperar un tiempo suficiente para que se realice la acción y se actualice el valor
+      setTimeout(() => {
+        // Obtener el valor actualizado después de hacer clic en el segundo formulario
+        var segundoNumeroDeSegundos = getLTMValue() + 3;
+        var tuNumeroDeSegundos = segundoNumeroDeSegundos * 1000;
+        console.log("tuNumeroDeSegundos", tuNumeroDeSegundos);
+
+        // Configurar el siguiente intervalo con el valor calculado
+        setInterval(() => {
+          simularClicEnFormularioYBoton();
+        }, tuNumeroDeSegundos);
+      }, 5000); // Ajusta este tiempo según sea necesario
+    }, 1000);
+
+    // // Simular un clic en el botón del segundo formulario
+    // // Esperar 1 segundo antes de simular un clic en el botón del segundo formulario
+    // setTimeout(() => {
+    //   const botonDeFormulario2 = formulario1.querySelector(".wbutton");
+    //   botonDeFormulario2.click();
+    // }, 1000);
+  }
+
+  // Llama a la función principal
+  simularClicEnFormularioYBoton();
+
+  // var tuNumeroDeSegundos = getLTMValue() + 3 * 1000;
+
+  // setInterval(simularClicEnFormularioYBoton, tuNumeroDeSegundos);
+  // setInterval(simularClicEnFormularioYBoton, 2 * 60 * 1000 + 55 * 1000);
+  // setInterval(simularClicEnFormularioYBoton, tuNumeroDeSegundos);
+}
+
 // Desencriptar enlaces hdpaste.com
 if (window.location.host === "hdpastes.com") {
   const arrayEnlacesCrudos = document.querySelectorAll("a");
